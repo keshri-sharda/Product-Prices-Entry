@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Group to center and scale the brand logo beautifully -->
+    <group
+        android:pivotX="54"
+        android:pivotY="54"
+        android:scaleX="1.1"
+        android:scaleY="1.1">
+
+        <!-- 1. BACKDROP GLOW (Subtle ambient red & blue aura behind the shop) -->
+        <path
+            android:pathData="M54,54m-38,0a38,38 0 1,1 76,0a38,38 0 1,1 -76,0">
+            <aapt:attr name="android:fillColor">
+                <gradient
+                    android:startX="16"
+                    android:startY="16"
+                    android:endX="92"
+                    android:endY="92"
+                    android:type="radial"
+                    android:gradientRadius="38">
+                    <item android:offset="0.0" android:color="#332979FF" /> <!-- Semi-translucent electric blue -->
+                    <item android:offset="0.7" android:color="#22FF1744" /> <!-- Semi-translucent hot red -->
+                    <item android:offset="1.0" android:color="#00000000" />
+                </gradient>
+            </aapt:attr>
+        </path>
+
+        <!-- 2. RETAIL SHOP WINDOW FRAME & COLUMNS (Rich Royal Blue) -->
+        <!-- Left Pillar -->
+        <path
+            android:pathData="M24,44 L28,44 L28,70 L24,70 Z">
+            <aapt:attr name="android:fillColor">
+                <gradient
+                    android:startX="24"
+                    android:startY="44"
+                    android:endX="28"
+                    android:endY="70"
+                    android:type="linear">
+                    <item android:offset="0.0" android:color="#2979FF" />
+                    <item android:offset="1.0" android:color="#1A237E" />
+                </gradient>
+            </aapt:attr>
+        </path>
+        <!-- Right Pillar -->
+        <path
+            android:pathData="M80,44 L84,44 L84,70 L80,70 Z">
+            <aapt:attr name="android:fillColor">
+                <gradient
+                    android:startX="80"
+                    android:startY="44"
+                    android:endX="84"
+                    android:endY="70"
+                    android:type="linear">
+                    <item android:offset="0.0" android:color="#2979FF" />
+                    <item android:offset="1.0" android:color="#1A237E" />
+                </gradient>
+            </aapt:attr>
+        </path>
+
+        <!-- 3. SHOPPING AWNING (Alternating Blue and Red Strips - gorgeous high contrast) -->
+        <!-- Red Canopy Base back plate -->
+        <path
+            android:fillColor="#1A237E"
+            android:pathData="M20,32 h68 v4 h-68 z" />
+
+        <!-- Stripe 1 (Leftmost - Cozy Red) -->
+        <path
+            android:pathData="M20,32 L37,32 L37,42 C37,44.5 32.75,44.5 32.75,42 C32.75,44.5 28.5,44.5 28.5,42 C28.5,44.5 20,44.5 20,42 Z">
+            <aapt:attr name="android:fillColor">
+                <gradient
+                    android:startX="20"
+                    android:startY="32"
+                    android:endX="37"
+                    android:endY="44"
+                    android:type="linear">
+                    <item android:offset="0.0" android:color="#FF5252" />
+                    <item android:offset="1.0" android:color="#D50000" />
+                </gradient>
+            </aapt:attr>
+        </path>
+
+        <!-- Stripe 2 (Mid-Left - Sapphire Blue) -->
+        <path
+            android:pathData="M37,32 L54,32 L54,42 C54,44.5 49.75,44.5 49.75,42 C49.75,44.5 45.5,44.5 45.5,42 C45.5,44.5 37,44.5 37,42 Z">
+            <aapt:attr name="android:fillColor">
+                <gradient
+                    android:startX="37"
+                    android:startY="32"
+                    android:endX="54"
+                    android:endY="44"
+                    android:type="linear">
+                    <item android:offset="0.0" android:color="#2979FF" />
+                    <item android:offset="1.0" android:color="#1565C0" />
+                </gradient>
+            </aapt:attr>
+        </path>
+
+        <!-- Stripe 3 (Mid-Right - Canopy Red) -->
+        <path
+            android:pathData="M54,32 L71,32 L71,42 C71,44.5 66.75,44.5 66.75,42 C66.75,44.5 62.5,44.5 62.5,42 C62.5,44.5 54,44.5 54,42 Z">
+            <aapt:attr name="android:fillColor">
+                <gradient
+                    android:startX="54"
+                    android:startY="32"
+                    android:endX="71"
+                    android:endY="44"
+                    android:type="linear">
+                    <item android:offset="0.0" android:color="#FF5252" />
+                    <item android:offset="1.0" android:color="#D50000" />
+                </gradient>
+            </aapt:attr>
+        </path>
+
+        <!-- Stripe 4 (Rightmost - Sapphire Blue) -->
+        <path
+            android:pathData="M71,32 L88,32 L88,42 C88,44.5 83.75,44.5 83.75,42 C83.75,44.5 79.5,44.5 79.5,42 C79.5,44.5 71,44.5 71,42 Z">
+            <aapt:attr name="android:fillColor">
+                <gradient
+                    android:startX="71"
+                    android:startY="32"
+                    android:endX="88"
+                    android:endY="44"
+                    android:type="linear">
+                    <item android:offset="0.0" android:color="#2979FF" />
+                    <item android:offset="1.0" android:color="#1565C0" />
+                </gradient>
+            </aapt:attr>
+        </path>
+
+        <!-- 4. FRIENDLY SHOPKEEPER (Cute, friendly avatar behind the counter) -->
+        <!-- Body / Apron (Electric Blue apron with Red straps) -->
+        <path
+            android:pathData="M44,70 C44,59 47,55 54,55 C61,55 64,59 64,70 Z">
+            <aapt:attr name="android:fillColor">
+                <gradient
+                    android:startX="44"
+                    android:startY="55"
+                    android:endX="64"
+                    android:endY="70"
+                    android:type="linear">
+                    <item android:offset="0.0" android:color="#1565C0" />
+                    <item android:offset="1.0" android:color="#0D47A1" />
+                </gradient>
+            </aapt:attr>
+        </path>
+        
+        <!-- Red Apron Suspenders/Straps -->
+        <path
+            android:fillColor="#FF1744"
+            android:pathData="M47,56.5 h2 v13.5 h-2 z M59,56.5 h2 v13.5 h-2 z" />
+
+        <!-- Face / Skin (Warm tone) -->
+        <path
+            android:fillColor="#FFD54F"
+            android:pathData="M54,48m-7,0a7,7 0 1,1 14,0a7,7 0 1,1 -14,0" />
+
+        <!-- Red Shopkeeper Cap -->
+        <path
+            android:pathData="M45.5,45 C45.5,41.5 48.5,39 54,39 C59.5,39 62.5,41.5 62.5,45 Z">
+            <aapt:attr name="android:fillColor">
+                <gradient
+                    android:startX="45"
+                    android:startY="39"
+                    android:endX="63"
+                    android:endY="45"
+                    android:type="linear">
+                    <item android:offset="0.0" android:color="#FF5252" />
+                    <item android:offset="1.0" android:color="#D50000" />
+                </gradient>
+            </aapt:attr>
+        </path>
+        <path
+            android:fillColor="#2979FF"
+            android:pathData="M44,44 h20 v2.5 h-20 z" /> <!-- Cap Blue visor brim -->
+
+        <!-- Cute smiling eyes & happy mouth -->
+        <path
+            android:strokeColor="#1A237E"
+            android:strokeWidth="1.2"
+            android:strokeLineCap="round"
+            android:pathData="M50.5,48 Q51.5,46.5 52.5,48" /> <!-- Smile left eye -->
+        <path
+            android:strokeColor="#1A237E"
+            android:strokeWidth="1.2"
+            android:strokeLineCap="round"
+            android:pathData="M55.5,48 Q56.5,46.5 57.5,48" /> <!-- Smile right eye -->
+        <path
+            android:strokeColor="#1A237E"
+            android:strokeWidth="1.6"
+            android:strokeLineCap="round"
+            android:pathData="M52,51 Q54,53.5 56,51" /> <!-- Cheerful curve smile -->
+
+        <!-- Left waving hand -->
+        <path
+            android:pathData="M44,61 C41,59.5 37,56 35,52 L39,50 C41,53.5 44,56.5 46,58 Z">
+            <aapt:attr name="android:fillColor">
+                <gradient
+                    android:startX="35"
+                    android:startY="50"
+                    android:endX="46"
+                    android:endY="61"
+                    android:type="linear">
+                    <item android:offset="0.0" android:color="#1565C0" />
+                    <item android:offset="1.0" android:color="#0D47A1" />
+                </gradient>
+            </aapt:attr>
+        </path>
+        <path
+            android:fillColor="#FFD54F"
+            android:pathData="M35,52m-3,0a3,3 0 1,1 6,0a3,3 0 1,1 -6,0" />
+
+        <!-- 5. SHOP MAIN COUNTER TABLE FRONT (Rich blue and fiery red accent board) -->
+        <!-- Solid Counter Top (Bold crimson red wood slab) -->
+        <path
+            android:pathData="M16,70 H92 V74 H16 Z">
+            <aapt:attr name="android:fillColor">
+                <gradient
+                    android:startX="16"
+                    android:startY="70"
+                    android:endX="92"
+                    android:endY="74"
+                    android:type="linear">
+                    <item android:offset="0.0" android:color="#FF1744" />
+                    <item android:offset="1.0" android:color="#B71C1C" />
+                </gradient>
+            </aapt:attr>
+        </path>
+
+        <!-- Main Counter Base Body (Vibrant Blue Panel) -->
+        <path
+            android:pathData="M20,74 H88 V88 H20 Z">
+            <aapt:attr name="android:fillColor">
+                <gradient
+                    android:startX="20"
+                    android:startY="74"
+                    android:endX="88"
+                    android:endY="88"
+                    android:type="linear">
+                    <item android:offset="0.0" android:color="#2979FF" />
+                    <item android:offset="1.0" android:color="#1565C0" />
+                </gradient>
+            </aapt:attr>
+        </path>
+
+        <!-- Clean, polished, white Price Chalkboard on the Counter front -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M30,77.5 c0,-1 1,-2 2,-2 h44 c1,0 2,1 2,2 v7 c0,1 -1,2 -2,2 h-44 c-1,0 -2,-1 -2,-2 z" />
+            
+        <!-- Representative drawn listing lines inside the price blackboard -->
+        <path
+            android:fillColor="#2979FF"
+            android:pathData="M34,79.5 h14 v1.5 h-14 z M34,83 h10 v1.5 h-10 z" />
+        <path
+            android:fillColor="#FF1744"
+            android:pathData="M56,79.5 h16 v1.5 h-16 z M56,83 h12 v1.5 h-12 z" />
+
+        <!-- 6. RED PRICE TAG hanging on the right side window! (Sleek red sticker theme) -->
+        <path
+            android:pathData="M68,54 L81,51 L87,58 L77,64 L69,59 Z">
+            <aapt:attr name="android:fillColor">
+                <gradient
+                    android:startX="68"
+                    android:startY="51"
+                    android:endX="87"
+                    android:endY="64"
+                    android:type="linear">
+                    <item android:offset="0.0" android:color="#FF5252" />
+                    <item android:offset="1.0" android:color="#D50000" />
+                </gradient>
+            </aapt:attr>
+        </path>
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M73,56.5m-1.5,0a1.5,1.5 0 1,1 3,0a1.5,1.5 0 1,1 -3,0" /> <!-- Thread hole -->
+        <!-- Modern string ribbon from pillar to tag -->
+        <path
+            android:strokeColor="#FFFFFF"
+            android:strokeWidth="1.2"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round"
+            android:pathData="M80,47 Q75,52 73,56.5" />
+
+        <!-- 7. SPARKLES & GRAPHIC COMPASS STARS (To radiate creative visual polish) -->
+        <path
+            android:fillColor="#00E5FF"
+            android:pathData="M26,24 L27,27 L30,28 L27,29 L26,32 L25,29 L22,28 L25,27 Z" />
+        <path
+            android:fillColor="#FF5252"
+            android:pathData="M82,24 L83,27 L86,28 L83,29 L82,32 L81,29 L78,28 L81,27 Z" />
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M54,14 L55,17 L58,18 L55,19 L54,22 L53,19 L50,18 L53,17 Z" />
+
+    </group>
+</vector>

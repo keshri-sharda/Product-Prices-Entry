@@ -1,0 +1,6 @@
+{
+  "name": "Shop Price List",
+  "description": "A dual-language shop price list manager with retail vs wholesale price records, custom category folders, supplier logs, and voice typing assistance.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
