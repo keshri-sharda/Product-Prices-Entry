@@ -266,17 +266,51 @@ class PriceListViewModel(application: Application) : AndroidViewModel(applicatio
             if (prodName.contains(term) || prodDesc.contains(term) || prodSupplier.contains(term)) {
                 return@all true
             }
-            if (term.length >= 2) {
-                val words = (prodName.split("[\\s_\\-\\.\\,\\(\\)]+".toRegex()) + 
-                             prodDesc.split("[\\s_\\-\\.\\,\\(\\)]+".toRegex()) + 
-                             prodSupplier.split("[\\s_\\-\\.\\,\\(\\)]+".toRegex())).filter { it.length >= 2 }
-                val hasFuzzyMatch = words.any { word ->
-                    val dist = levenshteinDistance(word, term)
-                    val maxAllowedDist = if (term.length > 5) 2 else 1
+            val words = (prodName.split("[\\s_\\-\\.\\,\\(\\)]+".toRegex()) + 
+                         prodDesc.split("[\\s_\\-\\.\\,\\(\\)]+".toRegex()) + 
+                         prodSupplier.split("[\\s_\\-\\.\\,\\(\\)]+".toRegex())).filter { it.isNotEmpty() }
+            val hasFuzzyMatch = words.any { word ->
+                if (term.length == 1) {
+                    word.startsWith(term)
+                } else if (word.length >= term.length) {
+                    val sub = word.substring(0, term.length)
+                    val dist = levenshteinDistance(sub, term)
+                    val maxAllowedDist = if (term.length <= 5) 1 else 2
                     dist <= maxAllowedDist
+                } else {
+                    false
                 }
-                if (hasFuzzyMatch) return@all true
             }
+            if (hasFuzzyMatch) return@all true
+            false
+        }
+    }
+
+    fun isFolderMatch(folder: FolderEntity, query: String): Boolean {
+        if (query.isBlank()) return true
+        val queryTerms = query.lowercase().trim().split("\\s+".toRegex()).filter { it.isNotEmpty() }
+        if (queryTerms.isEmpty()) return true
+
+        val folderName = folder.name.lowercase()
+
+        return queryTerms.all { term ->
+            if (folderName.contains(term)) {
+                return@all true
+            }
+            val words = folderName.split("[\\s_\\-\\.\\,\\(\\)]+".toRegex()).filter { it.isNotEmpty() }
+            val hasFuzzyMatch = words.any { word ->
+                if (term.length == 1) {
+                    word.startsWith(term)
+                } else if (word.length >= term.length) {
+                    val sub = word.substring(0, term.length)
+                    val dist = levenshteinDistance(sub, term)
+                    val maxAllowedDist = if (term.length <= 5) 1 else 2
+                    dist <= maxAllowedDist
+                } else {
+                    false
+                }
+            }
+            if (hasFuzzyMatch) return@all true
             false
         }
     }
@@ -338,7 +372,7 @@ class PriceListViewModel(application: Application) : AndroidViewModel(applicatio
     var defaultTaxRate by mutableStateOf(0f)
     var customShopName by mutableStateOf("")
     var customShopTagline by mutableStateOf("")
-    var appThemeMode by mutableStateOf("SYSTEM") // SYSTEM, LIGHT, DARK
+    var appThemeMode by mutableStateOf("LIGHT") // SYSTEM, LIGHT, DARK
     var appThemePalette by mutableStateOf("SAGE") // SAGE, BLUE, CRIMSON, TEAL, GOLDEN
     var fontSizeScale by mutableStateOf(1.0f) // 0.85f (Small), 1.0f (Normal), 1.15f (Large), 1.3f (Extra Large)
     var appVersionName by mutableStateOf("1.4.2")
@@ -375,7 +409,7 @@ class PriceListViewModel(application: Application) : AndroidViewModel(applicatio
         defaultTaxRate = prefs.getFloat("settings_tax_rate", 0f)
         customShopName = prefs.getString("settings_shop_name", "") ?: ""
         customShopTagline = prefs.getString("settings_shop_tagline", "") ?: ""
-        appThemeMode = prefs.getString("settings_theme_mode", "SYSTEM") ?: "SYSTEM"
+        appThemeMode = prefs.getString("settings_theme_mode", "LIGHT") ?: "LIGHT"
         appThemePalette = prefs.getString("settings_theme_palette", "SAGE") ?: "SAGE"
         fontSizeScale = prefs.getFloat("settings_font_size_scale", 1.0f)
         appVersionName = prefs.getString("settings_app_version_name", "1.4.2") ?: "1.4.2"

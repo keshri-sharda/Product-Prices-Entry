@@ -87,6 +87,7 @@ enum class MarkupType {
 
 data class FolderColorTheme(
     val background: Color,
+    val productsBackground: Color,
     val primaryText: Color,
     val subText: Color,
     val iconTint: Color,
@@ -182,16 +183,32 @@ fun getFolderColorTheme(folderId: Any, isLightTheme: Boolean): FolderColorTheme 
     val index = (hash % 12).let { if (it < 0) -it else it }
     
     return if (isLightTheme) {
+        val baseBg = lightPastels[index]
+        val prodBg = Color(
+            red = baseBg.red + (1f - baseBg.red) * 0.72f,
+            green = baseBg.green + (1f - baseBg.green) * 0.72f,
+            blue = baseBg.blue + (1f - baseBg.blue) * 0.72f,
+            alpha = baseBg.alpha
+        )
         FolderColorTheme(
-            background = lightPastels[index],
+            background = baseBg,
+            productsBackground = prodBg,
             primaryText = Color(0xFF1A1A1A),
             subText = lightDarkerTones[index].copy(alpha = 0.95f),
             iconTint = lightDarkerTones[index],
             borderColor = lightBorderPastels[index]
         )
     } else {
+        val baseBg = darkPastels[index]
+        val prodBg = Color(
+            red = baseBg.red + (1f - baseBg.red) * 0.18f,
+            green = baseBg.green + (1f - baseBg.green) * 0.18f,
+            blue = baseBg.blue + (1f - baseBg.blue) * 0.18f,
+            alpha = baseBg.alpha
+        )
         FolderColorTheme(
-            background = darkPastels[index],
+            background = baseBg,
+            productsBackground = prodBg,
             primaryText = Color(0xFFFFFFFF),
             subText = darkLighterTones[index],
             iconTint = darkBorderPastels[index],
@@ -1233,10 +1250,10 @@ fun FoldersScreen(
                 value = viewModel.aiSearchQuery,
                 onValueChange = { 
                     viewModel.aiSearchQuery = it
+                    viewModel.searchQuery = it
                     if (it.isBlank()) {
                         viewModel.aiSearchAnswer = null
                         viewModel.aiFilteredProductIds = emptyList()
-                        viewModel.searchQuery = ""
                     }
                 },
                 placeholder = {
@@ -1449,7 +1466,7 @@ fun FoldersScreen(
                 if (viewModel.searchQuery.isBlank()) {
                     emptyList<FolderEntity>()
                 } else {
-                    folders.filter { it.name.contains(viewModel.searchQuery, ignoreCase = true) }
+                    folders.filter { viewModel.isFolderMatch(it, viewModel.searchQuery) }
                 }
             }
 
@@ -3159,7 +3176,7 @@ fun ProductsScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(folderColorTheme.background)
+            .background(folderColorTheme.productsBackground)
     ) {
         // Navigation header back arrow
         Card(
@@ -3167,7 +3184,7 @@ fun ProductsScreen(
                 .fillMaxWidth()
                 .padding(bottom = 2.dp),
             shape = RoundedCornerShape(0.dp),
-            colors = CardDefaults.cardColors(containerColor = folderColorTheme.background),
+            colors = CardDefaults.cardColors(containerColor = folderColorTheme.productsBackground),
             border = BorderStroke(0.5.dp, folderColorTheme.borderColor)
         ) {
             Row(
@@ -3219,46 +3236,6 @@ fun ProductsScreen(
                     )
                 }
 
-                // Layout option selector (Card View vs Rows/Columns Spreadsheet table)
-                Row(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(folderColorTheme.borderColor.copy(alpha = 0.3f))
-                        .padding(2.dp)
-                ) {
-                    IconButton(
-                        onClick = { viewModel.viewMode = ViewMode.CARD },
-                        modifier = Modifier
-                            .size(36.dp)
-                            .clip(RoundedCornerShape(8.dp))
-                            .background(if (viewModel.viewMode == ViewMode.CARD) folderColorTheme.iconTint else Color.Transparent)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.GridView,
-                            contentDescription = "Card View",
-                            tint = if (viewModel.viewMode == ViewMode.CARD) folderColorTheme.background else folderColorTheme.primaryText,
-                            modifier = Modifier.size(16.dp)
-                        )
-                    }
-
-                    IconButton(
-                        onClick = { viewModel.viewMode = ViewMode.TABLE },
-                        modifier = Modifier
-                            .size(36.dp)
-                            .clip(RoundedCornerShape(8.dp))
-                            .background(if (viewModel.viewMode == ViewMode.TABLE) folderColorTheme.iconTint else Color.Transparent)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.TableChart,
-                            contentDescription = "Table View",
-                            tint = if (viewModel.viewMode == ViewMode.TABLE) folderColorTheme.background else folderColorTheme.primaryText,
-                            modifier = Modifier.size(16.dp)
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.width(8.dp))
-
                 IconButton(
                     onClick = {
                         viewModel.isSearchExpanded = !viewModel.isSearchExpanded
@@ -3290,15 +3267,45 @@ fun ProductsScreen(
                         expanded = showMoreFolderOptions,
                         onDismissRequest = { showMoreFolderOptions = false }
                     ) {
-                        DropdownMenuItem(
-                            text = { Text(if (language == AppLanguage.HINDI) "खोजें" else "Search Items") },
-                            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
-                            onClick = {
-                                viewModel.isSearchExpanded = !viewModel.isSearchExpanded
-                                showMoreFolderOptions = false
-                            }
+                        Text(
+                            text = if (language == AppLanguage.HINDI) "दृश्य बदलें (View Mode):" else "View Mode:",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
                         )
-                        
+
+                        DropdownMenuItem(
+                            text = { Text(if (language == AppLanguage.HINDI) "ग्रिड दृश्य (Card View)" else "Card View") },
+                            leadingIcon = { 
+                                Icon(
+                                    imageVector = Icons.Default.GridView, 
+                                    contentDescription = null,
+                                    tint = if (viewModel.viewMode == ViewMode.CARD) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                                ) 
+                            },
+                            onClick = {
+                                viewModel.viewMode = ViewMode.CARD
+                                showMoreFolderOptions = false
+                            },
+                            modifier = Modifier.testTag("dropdown_view_card_btn")
+                        )
+
+                        DropdownMenuItem(
+                            text = { Text(if (language == AppLanguage.HINDI) "तालिका दृश्य (Table View)" else "Table View") },
+                            leadingIcon = { 
+                                Icon(
+                                    imageVector = Icons.Default.TableChart, 
+                                    contentDescription = null,
+                                    tint = if (viewModel.viewMode == ViewMode.TABLE) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                                ) 
+                            },
+                            onClick = {
+                                viewModel.viewMode = ViewMode.TABLE
+                                showMoreFolderOptions = false
+                            },
+                            modifier = Modifier.testTag("dropdown_view_table_btn")
+                        )
+
                         HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
                         
                         Text(
@@ -5921,25 +5928,6 @@ fun SettingsDialog(
                                 subtitle = if (language == AppLanguage.HINDI) "अन्य कंप्यूटर या फ़ोन लिंक करें और स्कैन करें" else "Link other computer or phone and scan",
                                 onClick = { activeSubPage = SettingsSubPage.DEVICES },
                                 testTag = "settings_menu_devices"
-                            )
-
-                            // 7. Product Sort Settings
-                            val currentSortLabel = when (viewModel.appProductSortOption) {
-                                ProductSortOption.NAME_ASC -> if (language == AppLanguage.HINDI) "नाम (A से Z)" else "Name (A to Z)"
-                                ProductSortOption.NAME_DESC -> if (language == AppLanguage.HINDI) "नाम (Z से A)" else "Name (Z to A)"
-                                ProductSortOption.VALUE_HIGH_TO_LOW -> if (language == AppLanguage.HINDI) "मूल्य (अधिक से कम)" else "Value (High to Low)"
-                                ProductSortOption.VALUE_LOW_TO_HIGH -> if (language == AppLanguage.HINDI) "मूल्य (कम से अधिक)" else "Value (Low to High)"
-                                ProductSortOption.DATE_PURCHASED_NEWEST -> if (language == AppLanguage.HINDI) "खरीद तिथि (नवीनतम)" else "Date Purchased (Newest)"
-                                ProductSortOption.DATE_PURCHASED_OLDEST -> if (language == AppLanguage.HINDI) "खरीद तिथि (सबसे पुराना)" else "Date Purchased (Oldest)"
-                                ProductSortOption.DATE_ADDED_NEWEST -> if (language == AppLanguage.HINDI) "जोड़ने की तिथि (नवीनतम)" else "Date Added (Newest)"
-                                ProductSortOption.DATE_ADDED_OLDEST -> if (language == AppLanguage.HINDI) "जोड़ने की तिथि (सबसे पुराना)" else "Date Added (Oldest)"
-                            }
-                            SettingsMenuRow(
-                                icon = Icons.Default.Sort,
-                                title = if (language == AppLanguage.HINDI) "उत्पाद क्रमबद्ध करें (सॉर्ट)" else "Product Sort Settings",
-                                subtitle = "${if (language == AppLanguage.HINDI) "वर्तमान सॉर्ट" else "Current sorting"}: $currentSortLabel",
-                                onClick = { activeSubPage = SettingsSubPage.SORT_SETTINGS },
-                                testTag = "settings_menu_sort"
                             )
 
                             // 7. About App & Version
