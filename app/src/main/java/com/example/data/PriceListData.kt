@@ -61,7 +61,7 @@ data class BinProduct(
 @Dao
 interface PriceListDao {
     // Folders
-    @Query("SELECT * FROM folders ORDER BY name ASC")
+    @Query("SELECT * FROM folders ORDER BY id ASC")
     fun getAllFolders(): Flow<List<FolderEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -123,6 +123,9 @@ interface PriceListDao {
     @Query("SELECT * FROM bin_folders WHERE id = :id LIMIT 1")
     suspend fun getBinFolderById(id: Long): BinFolder?
 
+    @Query("DELETE FROM bin_folders WHERE deletedAt < :cutoff")
+    suspend fun deleteOldBinFolders(cutoff: Long)
+
     @Query("DELETE FROM bin_folders")
     suspend fun deleteAllBinFolders()
 
@@ -135,6 +138,9 @@ interface PriceListDao {
 
     @Delete
     suspend fun deleteBinProduct(product: BinProduct)
+
+    @Query("DELETE FROM bin_products WHERE deletedAt < :cutoff")
+    suspend fun deleteOldBinProducts(cutoff: Long)
 
     @Query("DELETE FROM bin_products")
     suspend fun deleteAllBinProducts()
@@ -224,6 +230,10 @@ class PriceListRepository(private val dao: PriceListDao) {
         dao.deleteBinFolder(folder)
     }
 
+    suspend fun deleteOldBinFolders(cutoff: Long) {
+        dao.deleteOldBinFolders(cutoff)
+    }
+
     suspend fun deleteAllBinFolders() {
         dao.deleteAllBinFolders()
     }
@@ -234,6 +244,10 @@ class PriceListRepository(private val dao: PriceListDao) {
 
     suspend fun deleteBinProduct(product: BinProduct) {
         dao.deleteBinProduct(product)
+    }
+
+    suspend fun deleteOldBinProducts(cutoff: Long) {
+        dao.deleteOldBinProducts(cutoff)
     }
 
     suspend fun deleteAllBinProducts() {

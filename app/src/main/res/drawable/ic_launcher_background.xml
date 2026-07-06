@@ -9,25 +9,25 @@
         android:pathData="M0,0h108v108h-108z">
         <aapt:attr name="android:fillColor">
             <gradient
-                android:startX="0"
+                android:startX="54"
                 android:startY="0"
-                android:endX="108"
+                android:endX="54"
                 android:endY="108"
                 android:type="linear">
-                <item android:offset="0.0" android:color="#002244" />   <!-- Deep Midnight Navy Blue -->
-                <item android:offset="0.45" android:color="#1A0A2A" />  <!-- Dark Slate Violet -->
-                <item android:offset="1.0" android:color="#4A000A" />   <!-- Deep Rich Crimson Red -->
+                <item android:offset="0.0" android:color="#FAFCFF" />   <!-- Fresh Pearl White -->
+                <item android:offset="0.5" android:color="#F1F5F9" />   <!-- Clean Premium Light Slate Grey -->
+                <item android:offset="1.0" android:color="#E2E8F0" />   <!-- Soft Matte Silver -->
             </gradient>
         </aapt:attr>
     </path>
-    <!-- Elegant, translucent concentric rings to add geometric depth -->
+    <!-- Elegant, ultra-thin concentric rings to add depth and texture -->
     <path
-        android:fillColor="#0DFFFFFF"
+        android:fillColor="#0D0F172A"
         android:pathData="M54,54m-42,0a42,42 0 1,1 84,0a42,42 0 1,1 -84,0" />
     <path
-        android:fillColor="#08FFFFFF"
+        android:fillColor="#070F172A"
         android:pathData="M54,54m-48,0a48,48 0 1,1 96,0a48,48 0 1,1 -96,0" />
     <path
-        android:fillColor="#05FFFFFF"
+        android:fillColor="#040F172A"
         android:pathData="M54,54m-32,0a32,32 0 1,1 64,0a32,32 0 1,1 -64,0" />
 </vector>
